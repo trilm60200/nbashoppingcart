@@ -1,0 +1,35 @@
+{
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "relationships": [],
+    "fields": [
+        {
+            "fieldName": "name",
+            "fieldType": "String",
+            "fieldValidateRules": []
+        },
+        {
+            "fieldName": "price",
+            "fieldType": "String",
+            "fieldValidateRules": []
+        },
+        {
+            "fieldName": "branch",
+            "fieldType": "String",
+            "fieldValidateRules": []
+        },
+        {
+            "fieldName": "color",
+            "fieldType": "String"
+        }
+    ],
+    "changelogDate": "20200518080058",
+    "dto": "mapstruct",
+    "searchEngine": false,
+    "service": "serviceImpl",
+    "entityTableName": "product",
+    "databaseType": "sql",
+    "readOnly": false,
+    "jpaMetamodelFiltering": true,
+    "pagination": "infinite-scroll"
+}

@@ -45,6 +45,7 @@ public class CacheConfiguration {
             createCache(cm, com.nba.shopping.domain.User.class.getName());
             createCache(cm, com.nba.shopping.domain.Authority.class.getName());
             createCache(cm, com.nba.shopping.domain.User.class.getName() + ".authorities");
+            createCache(cm, com.nba.shopping.domain.Product.class.getName());
             // jhipster-needle-ehcache-add-entry
         };
     }
