@@ -1,11 +1,11 @@
-id;name;price;branch;color
-1;Generic Steel Tuna;website calculating;cross-platform support;silver
-2;virtual wireless Computer;Legacy Dynamic magenta;THX actuating;cyan
-3;Unbranded Centers;Generic Metal Tuna;navigating Metical;violet
-4;throughput;Union transmitting;New Zealand;orange
-5;green Credit Card Account;Gloves Lao People's Democratic Republic;neutral;green
-6;Bike;digital;Oklahoma;lavender
-7;orange Security;Data Identity;Dynamic auxiliary;fuchsia
-8;COM Personal Loan Account yellow;Cape Verde;intangible homogeneous;olive
-9;Rubber CSS;Bike Keyboard Tunnel;Ergonomic Concrete Ball SMS;orchid
-10;methodical;quantifying Cheese rich;South Dakota Underpass virtual;indigo
+id;name;price;branch;color;search
+1;Generic Steel Tuna;100;cross-platform support;silver;generic steel tuna cross-platform
+2;virtual wireless Computer;100;THX actuating;cyan;virtual wireless computer thx actuating
+3;Unbranded Centers;99;navigating Metical;violet;unbranded centers navigating metical
+4;throughput;88;New Zealand;orange;throughput new zealand
+5;green Credit Card Account;10;neutral;green;green credit card account neutral
+6;Bike;11;Oklahoma;lavender;bike oklahoma
+7;orange Security;33;Dynamic auxiliary;fuchsia;orange security dynamic auxiliary
+8;COM Personal Loan Account yellow;22;intangible homogeneous;olive;com personal loan account yellow intangible homogeneous
+9;Rubber CSS;10000;Ergonomic Concrete Ball SMS;orchid;rubber css ergonomic concrete ball sms
+10;methodical;99;South Dakota Underpass virtual;indigo;methodical south dakota underpass virtual

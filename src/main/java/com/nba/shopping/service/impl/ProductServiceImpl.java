@@ -5,6 +5,7 @@ import com.nba.shopping.domain.Product;
 import com.nba.shopping.repository.ProductRepository;
 import com.nba.shopping.service.dto.ProductDTO;
 import com.nba.shopping.service.mapper.ProductMapper;
+import org.h2.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -43,6 +45,10 @@ public class ProductServiceImpl implements ProductService {
     public ProductDTO save(ProductDTO productDTO) {
         log.debug("Request to save Product : {}", productDTO);
         Product product = productMapper.toEntity(productDTO);
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(productDTO.getName());
+        stringBuilder.append(productDTO.getBranch());
+        product.setSearch(stringBuilder.toString().toLowerCase());
         product = productRepository.save(product);
         return productMapper.toDto(product);
     }
@@ -84,5 +90,21 @@ public class ProductServiceImpl implements ProductService {
     public void delete(Long id) {
         log.debug("Request to delete Product : {}", id);
         productRepository.deleteById(id);
+    }
+
+
+    /**
+     * Get all by search key.
+     *
+     * @param key the pagination information.
+     * @return the list of entities.
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public List<ProductDTO> findBySearch(String key) {
+        log.debug("Request to get all Products");
+        if (StringUtils.isNullOrEmpty(key))
+            return null;
+        return productMapper.toDto(productRepository.findBySearchContainingIgnoreCase(key.toLowerCase()));
     }
 }

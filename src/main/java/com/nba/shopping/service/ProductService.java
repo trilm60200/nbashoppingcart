@@ -5,6 +5,7 @@ import com.nba.shopping.service.dto.ProductDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -42,4 +43,11 @@ public interface ProductService {
      * @param id the id of the entity.
      */
     void delete(Long id);
+
+    /**
+     *
+     * @param key
+     * @return
+     */
+    List<ProductDTO> findBySearch(String key);
 }

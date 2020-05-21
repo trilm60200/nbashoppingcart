@@ -1,5 +1,7 @@
 package com.nba.shopping.web.rest;
 
+import com.nba.shopping.domain.Product;
+import com.nba.shopping.repository.ProductRepository;
 import com.nba.shopping.service.ProductService;
 import com.nba.shopping.web.rest.errors.BadRequestAlertException;
 import com.nba.shopping.service.dto.ProductDTO;
@@ -24,6 +26,8 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 /**
  * REST controller for managing {@link com.nba.shopping.domain.Product}.
@@ -43,9 +47,12 @@ public class ProductResource {
 
     private final ProductQueryService productQueryService;
 
-    public ProductResource(ProductService productService, ProductQueryService productQueryService) {
+    private final ProductRepository productRepository;
+
+    public ProductResource(ProductService productService, ProductQueryService productQueryService, ProductRepository productRepository) {
         this.productService = productService;
         this.productQueryService = productQueryService;
+        this.productRepository = productRepository;
     }
 
     /**
@@ -140,4 +147,20 @@ public class ProductResource {
         productService.delete(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString())).build();
     }
+
+    /**
+     * {@code SEARCH  /products/search?query=:query} : search for the products corresponding
+     * to the query.
+     *
+     * @param query the query of the product search.
+     * @return the result of the search.
+     */
+    @GetMapping("/products/search")
+    public ResponseEntity<List<ProductDTO>> searchProducts(@RequestParam String query) {
+        log.debug("REST request to get Product : {}", query);
+        List<ProductDTO> productDTOs = productService.findBySearch(query);
+        return ResponseEntity.ok().body(productDTOs);
+    }
+
+
 }

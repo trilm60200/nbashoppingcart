@@ -34,6 +34,9 @@ public class Product implements Serializable {
     @Column(name = "color")
     private String color;
 
+    @Column(name = "search")
+    private String search;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
@@ -95,6 +98,20 @@ public class Product implements Serializable {
         this.color = color;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+
+
+    public Product search(String search) {
+        this.search = search;
+        return this;
+    }
+
+    public String getSearch() {
+        return search;
+    }
+
+    public void setSearch(String search) {
+        this.search = search;
+    }
 
     @Override
     public boolean equals(Object o) {

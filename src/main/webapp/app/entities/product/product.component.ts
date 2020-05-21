@@ -3,6 +3,7 @@ import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Subscription } from 'rxjs';
 import { JhiEventManager, JhiParseLinks } from 'ng-jhipster';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ActivatedRoute } from '@angular/router';
 
 import { IProduct } from 'app/shared/model/product.model';
 
@@ -22,12 +23,14 @@ export class ProductComponent implements OnInit, OnDestroy {
   page: number;
   predicate: string;
   ascending: boolean;
+  currentSearch: string;
 
   constructor(
     protected productService: ProductService,
     protected eventManager: JhiEventManager,
     protected modalService: NgbModal,
-    protected parseLinks: JhiParseLinks
+    protected parseLinks: JhiParseLinks,
+    protected activatedRoute: ActivatedRoute
   ) {
     this.products = [];
     this.itemsPerPage = ITEMS_PER_PAGE;
@@ -37,9 +40,22 @@ export class ProductComponent implements OnInit, OnDestroy {
     };
     this.predicate = 'id';
     this.ascending = true;
+    this.currentSearch =
+      this.activatedRoute.snapshot && this.activatedRoute.snapshot.queryParams['search']
+        ? this.activatedRoute.snapshot.queryParams['search']
+        : '';
   }
 
   loadAll(): void {
+    if (this.currentSearch) {
+      this.productService
+        .search({
+          query: this.currentSearch
+        })
+        .subscribe((res: HttpResponse<IProduct[]>) => (this.products = res.body || []));
+      return;
+    }
+
     this.productService
       .query({
         page: this.page,
@@ -47,6 +63,11 @@ export class ProductComponent implements OnInit, OnDestroy {
         sort: this.sort()
       })
       .subscribe((res: HttpResponse<IProduct[]>) => this.paginateProducts(res.body, res.headers));
+  }
+
+  search(query: string): void {
+    this.currentSearch = query;
+    this.loadAll();
   }
 
   reset(): void {

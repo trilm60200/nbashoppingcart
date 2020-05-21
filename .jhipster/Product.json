@@ -21,6 +21,10 @@
         {
             "fieldName": "color",
             "fieldType": "String"
+        },
+        {
+          "fieldName": "search",
+          "fieldType": "String"
         }
     ],
     "changelogDate": "20200518080058",
