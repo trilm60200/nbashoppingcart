@@ -26,6 +26,8 @@ Run the following commands in two separate terminals to create a blissful develo
 auto-refreshes when files change on your hard drive.
 
     ./mvnw
+    
+Default port: http://localhost:8080
 
 ### Packaging as jar
 
