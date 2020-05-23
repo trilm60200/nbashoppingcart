@@ -1,5 +1,7 @@
 package com.nba.shopping.service.impl;
 
+import com.nba.shopping.domain.PriceAudit;
+import com.nba.shopping.repository.PriceAuditRepository;
 import com.nba.shopping.service.ProductService;
 import com.nba.shopping.domain.Product;
 import com.nba.shopping.repository.ProductRepository;
@@ -14,6 +16,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,9 +35,12 @@ public class ProductServiceImpl implements ProductService {
 
     private final ProductMapper productMapper;
 
-    public ProductServiceImpl(ProductRepository productRepository, ProductMapper productMapper) {
+    private final PriceAuditRepository priceAuditRepository;
+
+    public ProductServiceImpl(ProductRepository productRepository, ProductMapper productMapper, PriceAuditRepository priceAuditRepository) {
         this.productRepository = productRepository;
         this.productMapper = productMapper;
+        this.priceAuditRepository = priceAuditRepository;
     }
 
     /**
@@ -45,11 +53,23 @@ public class ProductServiceImpl implements ProductService {
     public ProductDTO save(ProductDTO productDTO) {
         log.debug("Request to save Product : {}", productDTO);
         Product product = productMapper.toEntity(productDTO);
+
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(productDTO.getName());
         stringBuilder.append(productDTO.getBranch());
         product.setSearch(stringBuilder.toString().toLowerCase());
         product = productRepository.save(product);
+
+        List<PriceAudit> priceAudits = priceAuditRepository.findByProductId(productDTO.getId());
+        if (!priceAudits.isEmpty()) {
+            PriceAudit priceAudit = priceAudits.get(0);
+            if (!priceAudit.getPrice().toString().equals(productDTO.getPrice())) {
+                priceAuditRepository.save(this.preparePriceAudit(product));
+            }
+        } else {
+            priceAuditRepository.save(this.preparePriceAudit(product));
+        }
+
         return productMapper.toDto(product);
     }
 
@@ -106,5 +126,15 @@ public class ProductServiceImpl implements ProductService {
         if (StringUtils.isNullOrEmpty(key))
             return null;
         return productMapper.toDto(productRepository.findBySearchContainingIgnoreCase(key.toLowerCase()));
+    }
+
+    private PriceAudit preparePriceAudit(Product productDTO) {
+        PriceAudit priceAudit = new PriceAudit();
+        priceAudit.setProductId(productDTO.getId());
+        priceAudit.setProductName(productDTO.getName());
+        priceAudit.setPrice(Integer.valueOf(productDTO.getPrice()));
+        priceAudit.setCreateDate(LocalDate.now());
+
+        return priceAudit;
     }
 }
